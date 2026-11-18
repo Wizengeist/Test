@@ -27,7 +27,7 @@ const coins=[];
 [[600,468],[680,468],[990,448],[1280,358],[1600,468],[1665,468],[1900,378],[2240,468],[2320,468],[2610,378],[2930,468],[3210,378],[3480,468],[3560,468],[3650,468]].forEach(([x,y])=>coins.push({x,y,taken:false,s:Math.random()*6}));
 const enemies=[{x:820,y:610,w:54,h:54,min:770,max:1050,vx:70,dir:1},{x:1580,y:610,w:54,h:54,min:1500,max:1800,vx:75,dir:-1},{x:2310,y:610,w:54,h:54,min:2270,max:2700,vx:85,dir:1},{x:3000,y:610,w:54,h:54,min:2920,max:3340,vx:90,dir:-1}];
 const checkpoints=[{x:1460,got:false},{x:2890,got:false}];
-addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(['arrowleft','arrowright','arrowup',' ','w','a','d'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key.toLower==='p')paused=!paused;if(e.key==='Enter'&&!started)started=true;if(e.key==='Enter'&&won)reset();});
+addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(['arrowleft','arrowright','arrowup',' ','w','a','d'].includes(e.key.toLowerCase()))e.preventDefault();if(e.key.toLowerCase()==='p')paused=!paused;if(e.key==='Enter'&&!started)started=true;if(e.key==='Enter'&&won)reset();});
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 let touch={left:false,right:false,jump:false};
 function button(x,y,w,h,label,key){ctx.fillStyle='#ffffff18';ctx.strokeStyle='#79e9ff';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x,y,w,h,14);ctx.fill();ctx.stroke();ctx.fillStyle='#fff';ctx.font='700 24px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x+w/2,y+h/2)}
@@ -88,7 +88,7 @@ function drawUI(){
  ctx.fillStyle='#090a20cc';ctx.fillRect(24,20,330,58);ctx.fillStyle='#fff';ctx.font='800 22px system-ui';ctx.fillText('● '+player.health+'   ◆ '+player.coins+' / '+coins.length,48,57);
  ctx.fillStyle='#ffffff33';ctx.fillRect(380,39,520,12);ctx.fillStyle='#62e6c7';ctx.fillRect(380,39,520*Math.min(1,player.x/3820),12);
  ctx.fillStyle='#fff';ctx.font='700 18px system-ui';ctx.textAlign='right';ctx.fillText(paused?'PAUSED':started?'':'PRESS ENTER',1256,55);ctx.textAlign='left';
- if(!started&&!won){ctx.fillStyle='#09091bcc';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 64px system-ui';ctx.fillText('NEON ROOFTOP RUN',W/2,300);ctx.fillStyle='#78e6d3';ctx.font='700 22px system-ui';ctx.fillText('Collect ◆  •  Stomp enemies  •  Reach the exit',W/2,350);ctx.fillStyle='#fff';ctx.font='800 20px system-ui';ctx.fillText('ENTER / TAP TO START',W/2,430)}
+ if(!started&&!won){ctx.fillStyle='#09091bcc';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 64px system-ui';ctx.fillText('NEON ROOFTOP RUN',W/2,300);ctx.fillStyle='#78e6d3';ctx.font='700 22px system-ui';ctx.fillText('Collect ◆  •  Stomp enemies  •  Reach the exit',W/2,350);ctx.fillStyle='#fff';ctx.font='800 20px system-ui';ctx.fillText('ENTER / TAP TO START',W/2,430);ctx.font='700 16px system-ui';ctx.fillText('MOVE: A / D or ← / →   JUMP: W / ↑ / SPACE',W/2,470)}
  if(paused){ctx.fillStyle='#09091bcc';ctx.fillRect(0,0,W,H);ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='900 58px system-ui';ctx.fillText('PAUSED',W/2,350)}
  if(won){ctx.fillStyle='#09091bcc';ctx.fillRect(0,0,W,H);ctx.fillStyle='#78e6d3';ctx.textAlign='center';ctx.font='900 64px system-ui';ctx.fillText('DISTRICT CLEARED',W/2,300);ctx.fillStyle='#fff';ctx.font='700 24px system-ui';ctx.fillText(player.coins+' coins collected',W/2,355);ctx.fillText('Press Enter to run again',W/2,420)}
  ctx.textAlign='left';
