@@ -31,8 +31,28 @@ addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if(['arrowleft','a
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
 let touch={left:false,right:false,jump:false};
 function button(x,y,w,h,label,key){ctx.fillStyle='#ffffff18';ctx.strokeStyle='#79e9ff';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(x,y,w,h,14);ctx.fill();ctx.stroke();ctx.fillStyle='#fff';ctx.font='700 24px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x+w/2,y+h/2)}
-canvas.addEventListener('pointerdown',e=>{const r=canvas.getBoundingRect(),x=(e.clientX-r.left)*W/r.width,y=(e.clientY-r.top)*H/r.height;touch.left=x<280&&y>580;touch.right=x>=280&&x<470&&y>580;touch.jump=x>1040&&y>580;if(!started)started=true});
+canvas.addEventListener('pointerdown',e=>{
+ e.preventDefault();
+ const r=canvas.getBoundingClientRect();
+ const x=(e.clientX-r.left)*W/r.width,y=(e.clientY-r.top)*H/r.height;
+ if(!started){started=true;touch.left=touch.right=touch.jump=false;return}
+ if(won){reset();return}
+ if(paused){paused=false;return}
+ touch.left=x<280&&y>580;
+ touch.right=x>=280&&x<470&&y>580;
+ touch.jump=x>1040&&y>580;
+});
+canvas.addEventListener('pointermove',e=>{
+ if(!e.buttons)return;
+ e.preventDefault();
+ const r=canvas.getBoundingClientRect();
+ const x=(e.clientX-r.left)*W/r.width,y=(e.clientY-r.top)*H/r.height;
+ touch.left=x<280&&y>580;
+ touch.right=x>=280&&x<470&&y>580;
+ touch.jump=x>1040&&y>580;
+});
 canvas.addEventListener('pointerup',()=>{touch.left=touch.right=touch.jump=false});
+canvas.addEventListener('pointercancel',()=>{touch.left=touch.right=touch.jump=false});
 function reset(){player.x=180;player.y=520;player.vx=player.vy=0;player.health=3;player.coins=0;player.checkpoint=0;coins.forEach(c=>c.taken=false);won=false;started=false;camera.x=0;checkpoints.forEach(c=>c.got=false)}
 function hurt(){if(player.inv>0)return;player.health--;player.inv=120;player.vx=-player.facing*360;player.vy=-420;if(player.health<=0){const cp=player.checkpoint;player.x=cp===0?180:cp===1?1460:2890;player.y=500;player.health=3}}
 function rects(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
